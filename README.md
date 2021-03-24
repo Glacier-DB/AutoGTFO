@@ -7,11 +7,6 @@ This script essentially uses the "find" command to search for executable binarie
 
 I decided to develop this tool to streamline <a href="https://haxf4rall.com/2019/06/29/ctf-guide/">CTF</a> challenges.
 
-  _____     _          _____ _____ _____ _____
- |  _  |_ _| |_ ___   |   __|_   _|   __|     |
- |     | | |  _| . |  |  |  | | | |   __|  |  |
- |__|__|___|_| |___|  |_____| |_| |__|  |_____|
-
 # Prerequisites
 * Python3 installation
 * Linux operating system
