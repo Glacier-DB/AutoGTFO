@@ -32,7 +32,9 @@ Get the script on your local machine by either:
 USAGE: ./AutoGTFO {OPTIONS}
 
 optional arguments:
-  -h, --help  show this help message and exit
-  -s, --sudo  Includes a sudo privilege check (sudo -l), may require passwd input
+  -h, --help            show this help message and exit
+  -s, --sudo            Includes a sudo privilege check (sudo -l), may require
+                        passwd input
+  -l, --list-functions  List all possible functions supported by binaries
 </pre>
 
