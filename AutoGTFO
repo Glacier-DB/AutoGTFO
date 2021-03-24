@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+
+import subprocess, requests, argparse
+
+# Arrays #
+unsplitBinaries = []
+rawBinaries = []
+foundEntries = []
+nopasswds = []
+potentialFuncs = ["shell:", "command:", "reverse-shell:", "non-interactive-reverse-shell:", "bind-shell:", "non-interactive-bind-shell:", "file-upload:", "file-download:", "file-write:", "file-read:", "library-load:", "suid:", "sudo:", "capabilities:", "limited-suid:"]
+
+def splash():
+
+    banner = """
+=================================================
+  _____     _          _____ _____ _____ _____
+ |  _  |_ _| |_ ___   |   __|_   _|   __|     |
+ |     | | |  _| . |  |  |  | | | |   __|  |  |
+ |__|__|___|_| |___|  |_____| |_| |__|  |_____|
+
+=================================================\n"""
+    print(banner)
+
+def checkSudo():
+
+    all = False
+    nopass = False
+
+    # Command to list sudo privileges #
+    sudocmd = subprocess.run(["sudo", "-l"], capture_output=True, text=True)
+
+    # Extract line(s) displaying sudo privileges #
+    permissions = False
+    sudoPrivs = ''
+    for line in sudocmd.stdout.splitlines():
+        if permissions:
+            sudoPrivs = sudoPrivs + line.strip(" ")
+        if "User" in line:
+            permissions = True
+
+    # Filter privileges from "sudo -l" output #
+    for line in sudoPrivs.splitlines():
+        if "User" in line:
+            pass
+        elif "NOPASSWD" in line:
+            current = line.split(":")
+            cmd = current[-1].strip(" ")
+            nopasswds.append(cmd)
+            nopass = True
+        elif "ALL" in line:
+            all = True
+            break
+
+    print("\nCAN EXECUTE AS SUDO:\n"+"="*20)
+    if nopass == True:
+        for x in nopasswds:
+            print(x)
+    elif all == True:
+        print("ALL")
+    else:
+        print("NONE")
+
+    print("\n")
+
+def checkURL(bin):
+    # Create and request URL of potential binary entry #
+    URL = "https://gtfobins.github.io/gtfobins/" + bin
+    r = requests.get(URL)
+
+    # Check if URL exists on GTFOBINS #
+    if r.status_code == 200:
+        foundEntries.append(bin)
+
+def parseMD(bin):
+    # Create and request URL for binary MD entry #
+    URL = "https://raw.githubusercontent.com/GTFOBins/GTFOBins.github.io/master/_gtfobins/" + bin + ".md"
+    r = requests.get(URL)
+
+    # Iterate through MD entry and output all functions #
+    print("=" * 40)
+    print("BINARY : "+bin+"\n")
+    for line in r.text.splitlines():
+        if line == "---":
+            pass
+        else:
+            print(line.strip("\n"))
+    print("=" * 40)
+
+def main():
+
+    # Command to list available UNIX binaries #
+    bins = subprocess.run(["find", "/", "-perm", "-4000", "-type", "f"], capture_output=True, text=True)
+    #usrbins = bins = subprocess.run(["find", "/usr/bin"], capture_output=True, text=True)
+
+    # Convert output to array of found binary locations #
+    for x in bins.stdout.splitlines():
+        unsplitBinaries.append(x)
+
+    #for x in usrbins.stdout.splitlines():
+    #    if x not in unsplitBinaries:
+    #        unsplitBinaries.append(x)
+
+    # Convert binary locations to pure binary names #
+    for x in unsplitBinaries:
+        bin = x.split("/")[-1]
+        if bin not in rawBinaries:
+            rawBinaries.append(bin)
+
+    # Iterate through found binaries and call function #
+    # to check for GTFOBIN entires #
+    for x in rawBinaries:
+        checkURL(x)
+
+    # If sudo flag enabled, call checkSudo function #
+    if args.sudo:
+        checkSudo()
+
+    # Format output #
+    if foundEntries:
+        print(f"FOUND GTFOBIN ENTRIES ({len(foundEntries)}):")
+        for x in foundEntries:
+            parseMD(x)
+    else:
+        print("No GTFOBIN entries found.\n")
+
+    print("\n\n")
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(usage='./autogtfo.py {OPTIONS}')
+    parser.add_argument("-s", "--sudo", action='store_true', help="Includes a sudo privilege check (sudo -l), may require passwd input")
+    args = parser.parse_args()
+    splash()
+    main()
