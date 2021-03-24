@@ -64,6 +64,7 @@ def checkSudo():
     print("\n")
 
 def checkURL(bin):
+    
     # Create and request URL of potential binary entry #
     try:
         URL = "https://gtfobins.github.io/gtfobins/" + bin
@@ -80,6 +81,7 @@ def checkURL(bin):
         foundEntries.append(bin)
 
 def parseMD(bin):
+    
     # Create and request URL for binary MD entry #
     try:
         URL = "https://raw.githubusercontent.com/GTFOBins/GTFOBins.github.io/master/_gtfobins/" + bin + ".md"
