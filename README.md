@@ -1,7 +1,9 @@
 # AutoGTFO
-A command line tool designed to find privilege escalation opportunities on UNIX systems, using <a href="https://gtfobins.github.io/">GTFObins.</a> Written in Python3.
+A command line tool designed to find privilege escalation opportunities on Linux systems, using <a href="https://gtfobins.github.io/">GTFObins.</a> Written in Python3.
 
 This script essentially uses the "find" command to search for executable binaries on the system, and checks them against <a href="https://gtfobins.github.io/">GTFObins</a>. The script can also check the executing user's sudo capabilities.
+
+I decided to develop this tool mainly to streamline <a href="https://haxf4rall.com/2019/06/29/ctf-guide/">CTF</a> challenges.
 
 # Prerequisites
 * Python3 installation
