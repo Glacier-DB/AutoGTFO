@@ -8,6 +8,7 @@ I decided to develop this tool to streamline <a href="https://haxf4rall.com/2019
 # Prerequisites
 * Python3 installation
 * Linux operating system
+* An internet connection
 
 # Installation
 Get the script on your local machine by either:
