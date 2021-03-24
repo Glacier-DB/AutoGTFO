@@ -9,6 +9,7 @@ I decided to develop this tool to streamline <a href="https://haxf4rall.com/2019
 
 # Prerequisites
 * Python3 installation
+* Python3 Requests Module
 * Linux operating system
 * An internet connection
 
@@ -25,6 +26,9 @@ Get the script on your local machine by either:
 3) Give the script execute permissions so you can run it from the console.
 <pre>cd /path/to/AutoGTFO</pre>
 <pre>chmod +x AutoGTFO</pre>
+
+4) If you don't already have the python requests module, install it like so:
+<pre>pip3 install requests</pre>
 
 # Usage
 
